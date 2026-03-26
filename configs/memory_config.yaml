@@ -1,0 +1,60 @@
+# Memory Store Configuration
+
+storage:
+  # Backend type: "memory" (in-memory dict) or "persistent" (JSON file)
+  backend: "memory"
+
+  # Persistence file path (used when backend is "persistent")
+  persistence_path: "data/memories.json"
+
+  # Auto-save interval in seconds (0 = disabled)
+  auto_save_interval: 300
+
+embedding:
+  # Embedding model provider: "sentence-transformers", "openai", "mock"
+  provider: "sentence-transformers"
+
+  # Model name (depends on provider)
+  # sentence-transformers: "all-MiniLM-L6-v2", "all-mpnet-base-v2"
+  # openai: "text-embedding-3-small", "text-embedding-3-large"
+  model_name: "all-MiniLM-L6-v2"
+
+  # Embedding dimension (auto-detected for most models)
+  dimension: 384
+
+  # Batch size for embedding multiple texts
+  batch_size: 32
+
+indexing:
+  # Indexer type: "faiss", "chromadb"
+  indexer_type: "faiss"
+
+  # FAISS-specific settings
+  faiss:
+    # Index type: "flat" (exact), "ivf" (approximate)
+    index_type: "flat"
+    # Number of clusters for IVF index
+    n_clusters: 100
+    # Number of probes for IVF search
+    n_probes: 10
+
+  # ChromaDB-specific settings
+  chromadb:
+    # Collection name
+    collection_name: "memories"
+    # Persistence directory (null for in-memory)
+    persist_directory: null
+
+versioning:
+  # Enable version tracking
+  enabled: true
+
+  # Supersession detection settings
+  supersession:
+    # Similarity threshold for detecting updates to same topic
+    similarity_threshold: 0.85
+    # Only detect supersession within same source
+    same_source_only: true
+
+  # Keep inactive memories for history
+  preserve_history: true

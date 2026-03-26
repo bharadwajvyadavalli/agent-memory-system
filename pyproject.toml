@@ -1,0 +1,89 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-memory-system"
+version = "0.1.0"
+description = "ASMR: Agentic & Reasoning-driven Memory — because retrieval should be a deliberation, not a lookup"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = ["rag", "retrieval", "memory", "agents", "llm", "langchain", "llamaindex"]
+
+dependencies = [
+    "langchain>=0.1.0",
+    "langchain-core>=0.1.0",
+    "langchain-community>=0.0.10",
+    "llama-index>=0.10.0",
+    "llama-index-core>=0.10.0",
+    "faiss-cpu>=1.7.4",
+    "chromadb>=0.4.0",
+    "openai>=1.0.0",
+    "anthropic>=0.18.0",
+    "sentence-transformers>=2.2.0",
+    "pydantic>=2.0.0",
+    "numpy>=1.24.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "ruff>=0.1.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+    "pytest-cov>=4.0.0",
+]
+notebooks = [
+    "jupyter>=1.0.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+    "ipywidgets>=8.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/agent-memory-system"
+Documentation = "https://github.com/yourusername/agent-memory-system#readme"
+Repository = "https://github.com/yourusername/agent-memory-system"
+Issues = "https://github.com/yourusername/agent-memory-system/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["memory*", "agents*", "retrieval*", "reasoning*", "evaluation*", "integrations*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --cov=memory --cov=agents --cov=retrieval --cov=reasoning --cov=evaluation"

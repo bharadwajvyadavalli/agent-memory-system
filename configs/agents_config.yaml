@@ -1,0 +1,125 @@
+# Agent Configuration
+
+# Default LLM settings (can be overridden per agent)
+default_llm:
+  provider: "openai"  # "openai", "anthropic", "mock"
+  model: "gpt-4o-mini"
+  temperature: 0.1
+  max_tokens: 1024
+  retry_attempts: 3
+  retry_delay: 1.0  # seconds, exponential backoff
+
+# Agent-specific configurations
+agents:
+  relevance:
+    enabled: true
+    # Override default LLM settings if needed
+    # llm:
+    #   model: "gpt-4o"
+    #   temperature: 0.0
+
+    # Relevance threshold: discard if confidence below this
+    confidence_threshold: 0.4
+
+    # Maximum candidates to process (for cost control)
+    max_candidates: 50
+
+    # Include few-shot examples in prompt
+    use_few_shot: true
+
+    # Number of few-shot examples
+    few_shot_count: 3
+
+  recency:
+    enabled: true
+
+    # Temporal scoring settings
+    temporal:
+      # Half-life for exponential decay (days)
+      half_life_days: 30
+
+      # Source-specific staleness thresholds (days)
+      staleness_thresholds:
+        news: 7
+        policy: 90
+        documentation: 180
+        fact: 365
+        default: 180
+
+    # Detect temporal language in content
+    detect_temporal_language: true
+
+    # Cross-reference with newer memories on same topic
+    cross_reference_enabled: true
+
+  conflict:
+    enabled: true
+
+    # Minimum similarity to consider pair for conflict check
+    similarity_threshold: 0.6
+
+    # Conflict types to detect
+    conflict_types:
+      - full_contradiction
+      - partial_update
+      - scope_difference
+
+    # Resolution strategy
+    resolution:
+      # Prefer newer memories in conflicts
+      prefer_newer: true
+      # Prefer more specific memories
+      prefer_specific: true
+      # Log all conflicts for audit
+      log_conflicts: true
+
+  synthesis:
+    enabled: true
+
+    # Maximum tokens for synthesized context
+    max_tokens: 2048
+
+    # Grouping strategy: "topic", "entity", "source", "none"
+    grouping_strategy: "topic"
+
+    # Include source attribution
+    include_attribution: true
+
+    # Include timestamps
+    include_timestamps: true
+
+    # Summarization aggressiveness (0.0 = verbose, 1.0 = minimal)
+    summarization_level: 0.5
+
+# Pipeline settings
+pipeline:
+  # Run relevance and recency agents in parallel
+  parallel_first_pass: true
+
+  # Skip agents for fast retrieval
+  fast_mode_skip_agents:
+    - relevance
+    - conflict
+    - synthesis
+
+  # Full agent pipeline order
+  agent_order:
+    - relevance
+    - recency
+    - conflict
+    - synthesis
+
+  # Logging
+  log_decisions: true
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+
+# Graceful degradation
+fallback:
+  # If agent fails, pass candidates through unchanged
+  pass_through_on_failure: true
+
+  # Maximum failures before disabling agent for session
+  max_failures: 3
+
+  # Re-enable after this many seconds
+  reenable_after: 300

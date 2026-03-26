@@ -1,0 +1,87 @@
+# Retrieval Pipeline Configuration
+
+# Candidate generation (first pass)
+candidate_generation:
+  # Number of candidates to retrieve from embedding search
+  top_k: 50
+
+  # Include metadata filters in search
+  enable_filters: true
+
+  # Pre-filter inactive memories
+  filter_inactive: true
+
+# Final retrieval settings
+retrieval:
+  # Number of memories to return
+  top_k: 5
+
+  # Require agent reasoning (false = embedding only)
+  require_reasoning: true
+
+  # Minimum confidence for inclusion
+  min_confidence: 0.3
+
+# Context building
+context:
+  # Maximum tokens in final context
+  max_tokens: 4096
+
+  # Token estimation method: "words" (fast), "tiktoken" (accurate)
+  token_estimation: "words"
+
+  # Words per token ratio (for "words" method)
+  words_per_token: 0.75
+
+  # Context format
+  format:
+    # Include memory IDs
+    include_ids: false
+
+    # Include timestamps
+    include_timestamps: true
+
+    # Include confidence scores
+    include_confidence: false
+
+    # Include source attribution
+    include_source: true
+
+    # Separator between memories
+    separator: "\n\n---\n\n"
+
+  # Truncation strategy when over budget
+  truncation:
+    # Strategy: "confidence" (drop lowest), "recency" (drop oldest), "proportional"
+    strategy: "confidence"
+
+    # Keep at least this many memories
+    min_memories: 1
+
+# Performance
+performance:
+  # Enable caching of embeddings
+  cache_embeddings: true
+
+  # Cache TTL in seconds
+  cache_ttl: 3600
+
+  # Async mode for agent calls
+  async_agents: true
+
+  # Timeout for LLM calls (seconds)
+  llm_timeout: 30
+
+# Observability
+observability:
+  # Track latency metrics
+  track_latency: true
+
+  # Track token usage
+  track_tokens: true
+
+  # Export format: "json", "prometheus", "none"
+  export_format: "json"
+
+  # Export path (for json format)
+  export_path: "data/metrics.json"
